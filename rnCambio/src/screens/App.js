@@ -14,7 +14,8 @@ class App extends Component {
             coin1: '',
             coin2: '',
             coinsL: [],
-            result: 1,
+            result: '',
+            isVisible: false,
         }
     }
 
@@ -66,6 +67,7 @@ class App extends Component {
                 this.setState({ result: coinL.valor });
             }
         });
+        this.setState({isVisible: true});
     }
 
     render() {
@@ -74,69 +76,69 @@ class App extends Component {
         return (
             <Fragment>
                 <StatusBar backgroundColor='#008b8b' />
-                <SafeAreaView
-                    style={{alignItems: "center", justifyContent: "center"}}
-                    >
+                <SafeAreaView>
                     <ScrollView>
                         <KeyboardAvoidingView
                             style={{flex:1}}
                             behavior='position'
                             enabled
                         >
-                            <View style={styles.header}>
-                                <Text style={styles.title}>
-                                    Quanto vale?
-                                </Text>
-                            </View>
-
-                            <View style={styles.coin1}>
-                                <Text style={styles.text}>Selecione as moedas: </Text>
-                                <Picker
-                                    selectedValue={this.state.coin1}
-                                    style={{height: 50, width: 300, backgroundColor: "rgba(0, 138, 138, 0.20)"}}
-                                    onValueChange={(item) => {
-                                            this.setState({coin1: item})
-                                        }
-                                    }
-                                    
-                                >
-                                    {coinsL.map(item => {
-                                        return(<Picker.Item label={`${item.moeda}`} value={item.moeda} key={item.valor}/>);
-                                    })}
-                                </Picker>
-                            </View>
-                            <View style={styles.coin2}>
-                                <Picker
-                                    selectedValue={this.state.coin2}
-                                    style={{height: 50, width: 300, backgroundColor: "rgba(0, 138, 138, 0.35)"}}
-                                    onValueChange={(item) => {
-                                            this.setState({coin2: item});
-                                        }
-                                    }
-                                >
-                                    {coinsL.map(item => {
-                                        return(<Picker.Item label={`${item.moeda}`} value={item.moeda} key={item.valor}/>);
-                                    })}
-                                </Picker>
-                            </View>
-                            <View style={styles.coin1}>
-                                <Text style={styles.text}>
-                                    {`1 ${this.state.coin1} vale ${this.state.result} ${this.state.coin2}`}
-                                </Text>
-                            </View>
-                            <View
-                            style={{alignItems: "center", justifyContent: "center"}}
-                            >
-                                <TouchableOpacity
-                                    onPress={() => this.result(this.state.coin1, this.state.coin2)}
-                                    style={{backgroundColor: 'rgba(0, 138, 138, 0.70)', width: 100, height: 40}}
-                                    >
-                                    <Text
-                                    style={{alignItems: "center", justifyContent: "center", paddingTop: 8, paddingLeft: 20, fontSize: 20}}
-                                        >
-                                        Calcular
+                            <View>
+                                <View style={styles.header}>
+                                    <Text style={styles.title}>
+                                        Quanto vale?
                                     </Text>
-                                </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.coin1}>
+                                    <Text style={styles.text}>Selecione as moedas</Text>
+                                    <Picker
+                                        selectedValue={this.state.coin1}
+                                        style={{height: 50, width: 300, backgroundColor: "rgba(0, 138, 138, 0.20)"}}
+                                        onValueChange={(item) => {
+                                                this.setState({coin1: item})
+                                            }
+                                        }
+                                        
+                                    >
+                                        {coinsL.map(item => {
+                                            return(<Picker.Item label={`${item.moeda}`} value={item.moeda} key={item.valor}/>);
+                                        })}
+                                    </Picker>
+                                </View>
+                                <View style={styles.coin2}>
+                                    <Picker
+                                        selectedValue={this.state.coin2}
+                                        style={{height: 50, width: 300, backgroundColor: "rgba(0, 138, 138, 0.35)"}}
+                                        onValueChange={(item) => {
+                                                this.setState({coin2: item});
+                                            }
+                                        }
+                                    >
+                                        {coinsL.map(item => {
+                                            return(<Picker.Item label={`${item.moeda}`} value={item.moeda} key={item.valor}/>);
+                                        })}
+                                    </Picker>
+                                </View>
+                                <View style={styles.coin1}>
+                                    {this.state.isVisible && <Text style={styles.text}>
+                                        {`1 ${this.state.coin1} vale ${this.state.result} ${this.state.coin2}`}
+                                    </Text>}
+                                </View>
+                                <View
+                                style={{alignItems: "center", justifyContent: "center"}}
+                                >
+                                    <TouchableOpacity
+                                        onPress={() => this.result(this.state.coin1, this.state.coin2)}
+                                        style={{backgroundColor: 'rgba(0, 138, 138, 0.70)', width: 100, height: 40}}
+                                        >
+                                        <Text
+                                            style={{alignItems: "center", justifyContent: "center", paddingTop: 8, paddingLeft: 20, fontSize: 20}}
+                                            >
+                                            Calcular
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </KeyboardAvoidingView>
                     </ScrollView>
@@ -147,7 +149,7 @@ class App extends Component {
 }
 const styles = StyleSheet.create({
     title: {
-        padding: 20,
+        paddingVertical: 20,
         fontSize: 24,
         color: '#ffffff',
         fontWeight: "bold"
@@ -157,15 +159,19 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     coin1: {
-        paddingHorizontal: 40,
-        paddingVertical: 20
+        justifyContent: "center",
+        alignItems: "center",
+        paddingBottom: 20
     }, 
     coin2: {
-        paddingHorizontal: 40,
+        justifyContent: "center",
+        alignItems: "center"
     },
     text:{
         fontSize: 20,
-        paddingBottom: 30,
+        paddingVertical: 30,
+        justifyContent: 'flex-end',
+        alignItems: "flex-start"
     }
 });
 
