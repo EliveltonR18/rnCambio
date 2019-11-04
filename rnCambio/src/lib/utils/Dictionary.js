@@ -1,0 +1,37 @@
+let countrys = new Map();
+
+countrys.set('USD', 'Dólar (USD)');
+countrys.set('CAD', 'Dólar (CAD)');
+countrys.set('HKD', 'Dólar (HKD)');
+countrys.set('ISK', 'Coroa (ISK)');
+countrys.set('PHP', 'Peso (PHP)');
+countrys.set('DKK', 'Coroa (DKK)');
+countrys.set('HUF', 'Florim (HUF)');
+countrys.set('CZK', 'Coroa (CZK)');
+countrys.set('GBP', 'Libra (GBP)');
+countrys.set('RON', 'Leu (RON)');
+countrys.set('SEK', 'Coroa (SEK)');
+countrys.set('IDR', 'Rupia (IDR)');
+countrys.set('INR', 'Rupia (INR)');
+countrys.set('RUB', 'Rublo (RUB)');
+countrys.set('HRK', 'Kuna (HRK)');
+countrys.set('JPY', 'Iene (JPY)');
+countrys.set('THB', 'Baht (THB)');
+countrys.set('CHF', 'Franco (CHF)');
+countrys.set('EUR', 'Euro (EUR)');
+countrys.set('MYR', 'Ringgit (MYR)');
+countrys.set('BGN', 'Lev (BGN)');
+countrys.set('TRY', 'Lira (TRY)');
+countrys.set('CNY', 'Remimbi (CNY)');
+countrys.set('NOK', 'Coroa (NOK)');
+countrys.set('NZD', 'Dólar (NZD)');
+countrys.set('ZAR', 'Rand (ZAR)');
+countrys.set('MXN', 'Peso (PHP)');
+countrys.set('SGD', 'Dólar (SGD)');
+countrys.set('AUD', 'Dólar (AUD)');
+countrys.set('ILS', 'Novo Shekel (ILS)');
+countrys.set('KRW', 'Won (KRW)');
+countrys.set('PLN', 'Zloty (PLN)');
+countrys.set('BRL', 'Real (BRL)');
+
+export default countrys;

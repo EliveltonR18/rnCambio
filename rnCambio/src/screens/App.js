@@ -2,8 +2,8 @@ import React, {Fragment, Component} from 'react';
 import { SafeAreaView, StyleSheet, View, Text, StatusBar, TextInput, TouchableOpacity, 
     ScrollView, KeyboardAvoidingView, Picker } from 'react-native';
 import * as _ from 'lodash';
-
 import api from '../api';
+import Dictionary from '../lib/utils/Dictionary';
 
 class App extends Component {
 
@@ -11,36 +11,51 @@ class App extends Component {
         super(props);
         this.state = {
             options: [],
-            coin1: 'EUR',
+            coin1: '',
             coin2: '',
             coinsL: [],
-            result: '',
+            result: 1,
         }
     }
 
     async componentDidMount() {
         const coinsL = [];
-        const coins = await api.get('latest?base=EUR');
+        const coins = await api.get('latest?base=USD');
         this.setState({ options: coins.data });
         for (var chave in coins.data.rates) {
             let moeda = {
                 moeda: chave,
                 valor: coins.data.rates[chave],
             }
+            moeda.moeda = Dictionary.get(chave);
             coinsL.push(moeda);
         };
-        this.setState({ coinsL: coinsL })
+
+        this.setState({ coinsL: coinsL });
+
+        coinsL.map(coinL => {
+            if (coinL.moeda === 'BRL') {
+                this.setState({ result: coinL.valor });
+            }
+        });
     }
 
     async result(coin, coinX) {
         const coinsL = [];
-        const coins = await api.get(`latest?base=${coin}`);
+        let aux;
+        let aux2;
+        let coinR;
+        let aux3;
+        [aux, aux2] = coin.split('(');
+        [coinR, aux3] = aux2.split(')');
+        const coins = await api.get(`latest?base=${coinR}`);
         this.setState({ options: coins.data });
         for (var chave in coins.data.rates) {
             let moeda = {
                 moeda: chave,
                 valor: coins.data.rates[chave],
             }
+            moeda.moeda = Dictionary.get(chave);
             coinsL.push(moeda);
         };
 
@@ -50,7 +65,7 @@ class App extends Component {
             if (coinL.moeda === coinX) {
                 this.setState({ result: coinL.valor });
             }
-        })
+        });
     }
 
     render() {
@@ -59,7 +74,9 @@ class App extends Component {
         return (
             <Fragment>
                 <StatusBar backgroundColor='#008b8b' />
-                <SafeAreaView>
+                <SafeAreaView
+                    style={{alignItems: "center", justifyContent: "center"}}
+                    >
                     <ScrollView>
                         <KeyboardAvoidingView
                             style={{flex:1}}
@@ -84,7 +101,7 @@ class App extends Component {
                                     
                                 >
                                     {coinsL.map(item => {
-                                        return(<Picker.Item label={item.moeda} value={item.moeda}/>);
+                                        return(<Picker.Item label={`${item.moeda}`} value={item.moeda} key={item.valor}/>);
                                     })}
                                 </Picker>
                             </View>
@@ -94,12 +111,11 @@ class App extends Component {
                                     style={{height: 50, width: 300, backgroundColor: "rgba(0, 138, 138, 0.35)"}}
                                     onValueChange={(item) => {
                                             this.setState({coin2: item});
-                                            this.result(this.state.coin1, item);
                                         }
                                     }
                                 >
                                     {coinsL.map(item => {
-                                        return(<Picker.Item label={item.moeda} value={item.moeda} key={item.valor}/>);
+                                        return(<Picker.Item label={`${item.moeda}`} value={item.moeda} key={item.valor}/>);
                                     })}
                                 </Picker>
                             </View>
@@ -107,6 +123,20 @@ class App extends Component {
                                 <Text style={styles.text}>
                                     {`1 ${this.state.coin1} vale ${this.state.result} ${this.state.coin2}`}
                                 </Text>
+                            </View>
+                            <View
+                            style={{alignItems: "center", justifyContent: "center"}}
+                            >
+                                <TouchableOpacity
+                                    onPress={() => this.result(this.state.coin1, this.state.coin2)}
+                                    style={{backgroundColor: 'rgba(0, 138, 138, 0.70)', width: 100, height: 40}}
+                                    >
+                                    <Text
+                                    style={{alignItems: "center", justifyContent: "center", paddingTop: 8, paddingLeft: 20, fontSize: 20}}
+                                        >
+                                        Calcular
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
                         </KeyboardAvoidingView>
                     </ScrollView>
